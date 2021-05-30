@@ -30,6 +30,10 @@ def mnist_features_labels(labels, n_images = 5000):
     # Return a tf tuple of feature and label list
     return mnist_features, mnist_labels
 
+def cross_entropy(n_labels, n_predictions, reduct_ind = 1): 
+    # Returning the crossentropy
+    return -tf.reduce_sum(n_labels * tf.log(_predictions), reduct_ind)
+
 # FINISH WORKING ON THE MAIN FUNCTION
 
 # 784 features means the image size is 28x28
@@ -57,10 +61,11 @@ with tf.Session() as session:
 
     # Cross entropy
     # This quantifies how far off the predictions were.
-    cross_entropy = -tf.reduce_sum(labels * tf.log(prediction), reduction_indices=1)
+    crossentropy = cross_entropy(labels, prediction)
+#     crossentropy = -tf.reduce_sum(labels * tf.log(prediction), reduction_indices=1)
 
     # Calculating the training loss
-    loss = tf.reduce_mean(cross_entropy)
+    loss = tf.reduce_mean(crossentropy)
 
     # Rate of change of the weights
     learning_rate = 0.08
