@@ -32,53 +32,44 @@ def mnist_features_labels(labels, n_images = 5000):
 
 # FINISH WORKING ON THE MAIN FUNCTION
 
-# Number of features (28*28 image is 784 features)
+# 784 features means the image size is 28x28
 n_features = 784
-# Number of labels
 n_labels = 3
 
-# Features and Labels
-features = tf.placeholder(tf.float32)
-labels = tf.placeholder(tf.float32)
-
+# Seeting up a float tensorflow varialbe for features and labels
+features, labels = tf.placeholder(tf.float32), tf.placeholder(tf.float32)
+ 
 # Weights and Biases
-w = get_weights(n_features, n_labels)
-b = get_biases(n_labels)
+weights = get_weights(n_features, n_labels)
+biases = get_biases(n_labels)
 
-# Linear Function xW + b
-logits = linear(features, w, b)
+# Get the linear function results
+logits = linear(features, weights, biases)
 
-# Training data
+# Start training the image data
 train_features, train_labels = mnist_features_labels(n_labels)
 
 with tf.Session() as session:
-    # TODO: Initialize session variables
+    # Initializing the session variables
     session.run(tf.global_variables_initializer())
-    # Softmax
+    # Apply softmax
     prediction = tf.nn.softmax(logits)
 
     # Cross entropy
     # This quantifies how far off the predictions were.
-    # You'll learn more about this in future lessons.
     cross_entropy = -tf.reduce_sum(labels * tf.log(prediction), reduction_indices=1)
 
-    # Training loss
-    # You'll learn more about this in future lessons.
+    # Calculating the training loss
     loss = tf.reduce_mean(cross_entropy)
 
-    # Rate at which the weights are changed
-    # You'll learn more about this in future lessons.
+    # Rate of change of the weights
     learning_rate = 0.08
 
-    # Gradient Descent
-    # This is the method used to train the model
-    # You'll learn more about this in future lessons.
+    # Using Gradient Descent to train the model
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
 
     # Run optimizer and get loss
-    _, l = session.run(
-        [optimizer, loss],
-        feed_dict={features: train_features, labels: train_labels})
+    _, loss_results = session.run([optimizer, loss], feed_dict={features: train_features, labels: train_labels})
 
 # Print loss
-print('Loss: {}'.format(l))
+print('Loss: {}'.format(loss_results))
