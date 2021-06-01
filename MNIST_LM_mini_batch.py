@@ -68,12 +68,10 @@ with tf.Session() as sess:
     sess.run(init)
     
     # Train optimizer on all batches
-    for batch_features, batch_labels in batches(batch_size, train_features, train_labels):
-        sess.run(optimizer, feed_dict={features: batch_features, labels: batch_labels})
+    for b_features, b_labels in batches(batch_size, train_features, train_labels):
+        sess.run(optimizer, feed_dict={features: b_features, labels: b_labels})
 
     # Calculate accuracy for test dataset
-    test_accuracy = sess.run(
-        accuracy,
-        feed_dict={features: test_features, labels: test_labels})
+    test_accuracy = sess.run, accuracy, feed_dict={features: test_features, labels: test_labels})
     
 print('Test Accuracy: {}'.format(test_accuracy))
